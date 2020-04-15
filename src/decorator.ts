@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { Container } from 'inversify';
 
 export function $inject(key?: string) {
-	return (target: Vue, propertyKey: string) => {
+	return (target: any, propertyKey: string) => {
 		const bindingKey = key ? key : parseBindingKeyFromPropertyKey(propertyKey);
 		Object.defineProperty(target, propertyKey, {
 			get(): any {
