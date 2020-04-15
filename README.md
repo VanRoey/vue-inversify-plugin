@@ -68,3 +68,35 @@ export default class MyComponent extends Vue {
 
 }
 ```
+
+### Usage along with [vuex-module-decorators](https://github.com/championswimmer/vuex-module-decorators)
+
+my-test-module.ts:
+```typescript
+import {$înject} from 'vue-inversify-plugin';
+import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+
+@Module
+export default class MyTestModule extends VuexModule {
+  @$inject()
+  private readonly myService!: IMyService;
+  
+  private _test: string = '';
+
+  get test(): string {
+    return this._test;
+  }
+
+  @Action
+  public getTest(){
+    const test = this.myService.test();  
+    this.SET_TEST(test);
+  }
+  
+  @Mutation
+  private SET_TEST(test: string): void {
+    this._test = test;
+  } 
+ 
+}
+```
