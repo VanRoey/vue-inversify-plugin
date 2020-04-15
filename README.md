@@ -16,7 +16,7 @@ services/my-service.ts:
 ```typescript
 import {injectable} from 'inversify';
 
-export interface IMyService {
+export interface IMyService { 
   test(): string;
 }
 
