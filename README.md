@@ -35,7 +35,7 @@ import 'reflect-metadata';
 import Vue from 'vue';
 import {Container} from 'inversify';
 import {IMyService, MyService} from '@/services/my-service';
-import { vueInversifyPlugin} from 'vue-inversify-plugin';
+import { vueInversifyPlugin} from '@vanroeybe/vue-inversify-plugin';
 
 // Create an inversify container
 const container = new Container();
@@ -51,7 +51,7 @@ MyComponent.ts:
 ```typescript
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import {$inject} from 'vue-inversify-plugin';
+import {$inject} from '@vanroeybe/vue-inversify-plugin';
 
 @Component({
  name: 'MyComponent'
@@ -73,7 +73,7 @@ export default class MyComponent extends Vue {
 
 my-test-module.ts:
 ```typescript
-import {$înject} from 'vue-inversify-plugin';
+import {$înject} from '@vanroeybe/vue-inversify-plugin';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 
 @Module
