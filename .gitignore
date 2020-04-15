@@ -1,0 +1,7 @@
+dist/
+node_modules/
+publish.sh
+.idea/workspace.xml
+.idea/*.*
+.idea
+yarn-error.log
