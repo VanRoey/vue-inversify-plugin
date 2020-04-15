@@ -1,2 +1,2 @@
 export * from './decorator';
-export * from './decorator';
+export * from './plugin';

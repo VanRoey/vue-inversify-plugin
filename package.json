@@ -1,5 +1,5 @@
 {
-	"name": "vue-inversify-plugin",
+	"name": "@vanroeybe/vue-inversify-plugin",
 	"version": "1.0.0",
 	"description": "A plugin for Vuejs to use inversify",
 	"main": "dist/index.js",

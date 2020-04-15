@@ -2,11 +2,11 @@
 Visit our website: www.vanroey.be
 
 # 1. Installation
-`npm i vue-inversify-plugin`
+`npm i @vanroeybe/vue-inversify-plugin`
 
 or
 
-`yarn add vue-inversify-plugin`
+`yarn add @vanroeybe/vue-inversify-plugin`
 
 # 2. Documentation
 > For inversify specific questions, please refer to it's official documentation: https://github.com/inversify/InversifyJS 
