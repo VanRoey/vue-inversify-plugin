@@ -58,7 +58,7 @@ import {$inject} from 'vue-inversify-plugin';
 })
 export default class MyComponent extends Vue {
   @$inject('IMyService') // Inject using key
-  private readonly service!: IService;
+  private readonly service!: IMyService;
   
   @$inject() // Injecting without a key => if just leaving the 'I' from the propertyName and the property is in camelCase it will work
   private readonly myService!: IMyService;
