@@ -69,7 +69,7 @@ describe($inject, () => {
 			});
 
 			describe('not passing a key to the decorator', () => {
-				it('should return the value registered in the container matching the i+nameOfTheProperty', function() {
+				it('should return the value registered in the container matching the I+NameOfTheProperty', function() {
 
 					@Component
 					class TestComponent extends Vue {
@@ -82,7 +82,7 @@ describe($inject, () => {
 				});
 			});
 
-			it('should ignore the underscore if a property is prefixed with it and assign the value registered in the container matching i+nameOfTheProperty', function() {
+			it('should ignore the underscore if a property is prefixed with it and assign the value registered in the container matching I+NameOfTheProperty', function() {
 				class TestComponent extends Vue {
 					@$inject()
 					_tester!: ITester;
