@@ -63,7 +63,7 @@ export default class MyComponent extends Vue {
   @$inject() // Injecting without a key => if just leaving the 'I' from the propertyName and the property is in camelCase it will work
   private readonly myService!: IMyService;
   
-  @$inject // This also works if you put an underscore before the property name!
+  @$inject() // This also works if you put an underscore before the property name!
   private readonly _myService!: IMyService;
 
 }
@@ -73,7 +73,7 @@ export default class MyComponent extends Vue {
 
 my-test-module.ts:
 ```typescript
-import {$înject} from '@vanroeybe/vue-inversify-plugin';
+import {$inject} from '@vanroeybe/vue-inversify-plugin';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 
 @Module
