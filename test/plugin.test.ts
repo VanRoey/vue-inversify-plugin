@@ -1,18 +1,19 @@
 import { vueInversifyPlugin } from '../src/plugin';
 import { Container } from 'inversify';
-import Vue from 'vue';
+import { createApp } from 'vue';
 
 describe(vueInversifyPlugin, () => {
-	describe('registering the plugin to the Vue instance', () => {
-		it('should add a property "_inversifyContainer" to the prototype of the Vue instance with the container passed container as value', function() {
-			// ARRANGE
-			const container = new Container();
+  describe('registering the plugin to the Vue app instance', () => {
+    it('should add a property "_inversifyContainer" to the globalProperties of the Vue app instance with the container passed container as value', function() {
+      // ARRANGE
+      const app = createApp({})
+      const container = new Container();
 
-			// ACT
-			Vue.use(vueInversifyPlugin(container));
+      // ACT
+      app.use(vueInversifyPlugin(container));
 
-			// ASSERT
-			expect(Vue.prototype._inversifyContainer).toStrictEqual(container);
-		});
-	});
+      // ASSERT
+      expect(app.config.globalProperties._inversifyContainer).toStrictEqual(container);
+    });
+  });
 });

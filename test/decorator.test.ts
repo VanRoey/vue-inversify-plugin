@@ -1,98 +1,129 @@
+import 'reflect-metadata';
 import { $inject } from '../src';
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
+import { createApp } from 'vue';
+import { Vue, Options } from 'vue-class-component';
 import { Container, injectable } from 'inversify';
 import { vueInversifyPlugin } from '../src/plugin';
-import 'reflect-metadata';
 
 describe($inject, () => {
-	describe('decorating a data property of a component', () => {
-		describe('also assigning a value to the property', () => {
-			it('should throw an error ', function() {
-				@Component
-				class TestComponent extends Vue {
-					@$inject()
-					testProp: string = '';
-				}
+  document.body.innerHTML = `
+    <div>
+      <div id="app"></div>
+    </div>
+  `
 
-				expect(() => {
-					new TestComponent();
-				}).toThrowError('Assigning a value to an injected property is not possible!');
-			});
-		});
+  describe('decorating a data property of a component', () => {
+    describe('also assigning a value to the property', () => {
+      it('should throw an error ', function() {
 
+        @Options({ template: '<div></div>' })
+        class TestComponent extends Vue {
+          @$inject()
+          testProp: string = '';
+        }
 
-		describe('not assigning a value to the injected property', () => {
-			@injectable()
-			class Test {
+        const app = createApp({
+          template: '<div><test-component ref="testComponent" /></div>',
+          components: { TestComponent }
+        });
 
-			}
+        expect(() => {
+          app.mount('#app')
+        }).toThrowError('Assigning a value to an injected property is not possible!');
+      });
+    });
 
-			interface ITester {
-				test: string;
-			}
+    describe('not assigning a value to the injected property', () => {
 
-			@injectable()
-			class Tester implements ITester {
-				test: string = 'e';
-			}
+      @injectable()
+      class Test {
 
+      }
 
-			const testClassKey = 'test';
+      interface ITester {
+        test: string;
+      }
 
-			const testConstant = { a: 'a' };
-			const testConstantKey = 'b';
+      @injectable()
+      class Tester implements ITester {
+        test: string = 'e';
+      }
 
-			const container = new Container();
-			container.bind(testClassKey).to(Test);
-			container.bind(testConstantKey).toConstantValue(testConstant);
-			container.bind<ITester>('ITester').to(Tester);
+      const testClassKey = 'test';
 
-			Vue.use(vueInversifyPlugin(container));
+      const testConstant = { a: 'a' };
+      const testConstantKey = 'b';
 
-			describe('passing a key to the decorator', () => {
-				it('should make the property equal to the matching value of the key registered in the container', function() {
-					@Component
-					class TestComponent extends Vue {
-						@$inject(testClassKey)
-						a: any;
+      const container = new Container();
+      container.bind(testClassKey).to(Test);
+      container.bind(testConstantKey).toConstantValue(testConstant);
+      container.bind<ITester>('ITester').to(Tester);
 
-						@$inject(testConstantKey)
-						b: any;
-					}
+      describe('passing a key to the decorator', () => {
+        it('should make the property equal to the matching value of the key registered in the container', function() {
 
-					const component = new TestComponent();
+          @Options({ template: '<div></div>' })
+          class TestComponent extends Vue {
+            @$inject(testClassKey)
+            a: any;
 
-					expect(component.a instanceof Test).toBe(true);
-					expect(component.b).toStrictEqual(testConstant);
-				});
-			});
+            @$inject(testConstantKey)
+            b: any;
+          }
 
-			describe('not passing a key to the decorator', () => {
-				it('should return the value registered in the container matching the I+NameOfTheProperty', function() {
+          const app = createApp({
+            template: '<div><test-component ref="testComponent" /></div>',
+            components: { TestComponent }
+          });
+          app.use(vueInversifyPlugin(container));
+          const vm = app.mount('#app');
 
-					@Component
-					class TestComponent extends Vue {
-						@$inject()
-						tester!: ITester;
-					}
+          const component = vm.$refs.testComponent as any;
+          expect(component.a instanceof Test).toBe(true);
+          expect(component.b).toStrictEqual(testConstant);
+        });
+      });
 
-					const component = new TestComponent();
-					expect(component.tester instanceof Tester).toBe(true);
-				});
-			});
+      describe('not passing a key to the decorator', () => {
+        it('should return the value registered in the container matching the I+NameOfTheProperty', function() {
 
-			it('should ignore the underscore if a property is prefixed with it and assign the value registered in the container matching I+NameOfTheProperty', function() {
-				class TestComponent extends Vue {
-					@$inject()
-					_tester!: ITester;
-				}
+          @Options({ template: '<div></div>' })
+          class TestComponent extends Vue {
+            @$inject()
+            tester!: ITester;
+          }
 
-				const component = new TestComponent();
-				expect(component._tester instanceof Tester).toBe(true);
-			});
-		});
+          const app = createApp({
+            template: '<div><test-component ref="testComponent" /></div>',
+            components: { TestComponent }
+          });
+          app.use(vueInversifyPlugin(container));
+          const vm = app.mount('#app');
 
+          const component = vm.$refs.testComponent as any;
+          expect(component.tester instanceof Tester).toBe(true);
+        });
+      });
 
-	});
+      it('should ignore the underscore if a property is prefixed with it and assign the value registered in the container matching I+NameOfTheProperty', function() {
+
+        @Options({ template: '<div></div>' })
+        class TestComponent extends Vue {
+          @$inject()
+          _tester!: ITester;
+        }
+
+        const app = createApp({
+          template: '<div><test-component ref="testComponent" /></div>',
+          components: { TestComponent }
+        });
+        app.use(vueInversifyPlugin(container));
+        const vm = app.mount('#app');
+
+        const component = vm.$refs.testComponent as any;
+        expect(component._tester instanceof Tester).toBe(true);
+      });
+    });
+
+  });
 });
