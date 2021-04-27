@@ -1,10 +1,10 @@
-import { PluginObject } from 'vue';
+import { Plugin } from 'vue';
 import { Container } from 'inversify';
 
-export function vueInversifyPlugin(container: Container): PluginObject<any> {
-	return {
-		install: (Vue1) => {
-			Vue1.prototype._inversifyContainer = container;
-		}
-	};
+export function vueInversifyPlugin(container: Container): Plugin {
+  return {
+    install: (app) => {
+      app.config.globalProperties._inversifyContainer = container;
+    }
+  };
 }
